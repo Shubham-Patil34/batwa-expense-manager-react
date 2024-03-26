@@ -20,7 +20,7 @@ class Nav extends Component {
             </button>
 
             <div className='collapse navbar-collapse' id='mobile-nav'>
-              <ul className='navbar-nav mr-auto'>
+              <ul className='navbar-nav me-auto'>
                 <li className='nav-item'>
                   <Link className='nav-link' to='dashboard'>
                     Dashboard
@@ -28,7 +28,7 @@ class Nav extends Component {
                 </li>
               </ul>
 
-              <ul className='navbar-nav ml-auto'>
+              <ul className='navbar-nav ms-auto'>
                 <li className='nav-item'>
                   <Link className='nav-link ' to='register'>
                     Sign Up
