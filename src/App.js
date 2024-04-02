@@ -6,15 +6,17 @@ import Dashboard from './components/dashboard/Dashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import WalletForm from './components/dashboard/operations/WalletForm';
+import NotFound from './components/common/NotFound';
 
 function App() {
   return (
     <BrowserRouter>
       <Nav />
       <Routes>
-        <Route exact path='/' element={<Welcome />} />
-        <Route exact path='/dashboard' element={<Dashboard />} />
-        <Route exact path='/createwallet' element={<WalletForm />} />
+        <Route path='/' element={<Welcome />} />
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/createwallet' element={<WalletForm />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
