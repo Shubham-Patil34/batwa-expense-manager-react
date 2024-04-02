@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { createWallet } from '../../../actions/projectActions';
 import { useNavigate } from 'react-router-dom';
+import { connect, useDispatch } from 'react-redux';
+import classnames from 'classnames';
 
-const WalletForm = () => {
+const WalletForm = (props) => {
   const [name, setName] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState(3); // Default priority
+  const [errors, setErrors] = useState('');
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,17 +24,14 @@ const WalletForm = () => {
       priority,
     };
 
-    try {
-      const response = await axios.post(
-        'http://localhost:8088/batwa/create',
-        newWallet
-      );
-      navigate('/dashboard');
-    } catch (err) {
-      console.error(err);
-      alert('Error creating wallet');
-    }
+    dispatch(createWallet(newWallet, navigate));
   };
+
+  useEffect(() => {
+    if (props.errors !== errors) {
+      setErrors(props.errors);
+    }
+  }, [props.errors]);
 
   const changeHandler = (event) => {
     const { name, value } = event.target;
@@ -66,29 +67,38 @@ const WalletForm = () => {
                     type='text'
                     onChange={changeHandler}
                     value={name}
-                    className='form-control form-control-lg'
+                    className={classnames('form-control form-control-lg', {
+                      'is-invalid': errors.name,
+                    })}
                     placeholder='Account Name'
                     name='name'
                   />
+                  <p className='text-danger'>{errors.name}</p>
                 </div>
                 <div className='form-group mb-3'>
                   <input
                     type='text'
                     onChange={changeHandler}
                     value={accountNumber}
-                    className='form-control form-control-lg'
+                    className={classnames('form-control form-control-lg', {
+                      'is-invalid': errors.accountNumber,
+                    })}
                     placeholder='Account No'
                     name='accountNumber'
                   />
+                  <p className='text-danger'>{errors.accountNumber}</p>
                 </div>
                 <div className='form-group mb-3'>
                   <textarea
                     onChange={changeHandler}
                     value={description}
-                    className='form-control form-control-lg'
+                    className={classnames('form-control form-control-lg', {
+                      'is-invalid': errors.description,
+                    })}
                     placeholder='Description'
                     name='description'
                   />
+                  <p className='text-danger'>{errors.description}</p>
                 </div>
                 <div className='form-group mb-3'>
                   <select
@@ -117,4 +127,8 @@ const WalletForm = () => {
   );
 };
 
-export default WalletForm;
+const mapStateToProps = (state) => ({
+  errors: state.errors,
+});
+
+export default connect(mapStateToProps, { createWallet })(WalletForm);
