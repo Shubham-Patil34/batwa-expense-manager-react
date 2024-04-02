@@ -1,107 +1,120 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-class WalletForm extends Component {
-  constructor(props) {
-    super(props);
+const WalletForm = () => {
+  const [name, setName] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
+  const [description, setDescription] = useState('');
+  const [priority, setPriority] = useState(3); // Default priority
 
-    this.state = {
-      name: '',
-      accountNumber: '',
-      description: '',
-      priority: '',
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const newWallet = {
+      name,
+      accountNumber,
+      description,
+      priority,
     };
-  }
 
-  changeHandler = (event, fieldName) => {
-    this.setState({
-      [fieldName]: event.target.value,
-    });
+    try {
+      const response = await axios.post(
+        'http://localhost:8088/batwa/create',
+        newWallet
+      );
+      navigate('/dashboard');
+    } catch (err) {
+      console.error(err);
+      alert('Error creating wallet');
+    }
   };
 
-  handleSubmit(event) {
-    const newWallet = {
-      name: this.state.name,
-      accountNumber: this.state.accountNumber,
-      description: this.state.description,
-      priority: this.state.priority,
-    };
+  const changeHandler = (event) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'accountNumber':
+        setAccountNumber(value);
+        break;
+      case 'description':
+        setDescription(value);
+        break;
+      case 'priority':
+        setPriority(parseInt(value)); // Parse to integer
+        break;
+      default:
+        break;
+    }
+  };
 
-    axios
-      .post('http://localhost:8088/batwa/create', newWallet)
-      .then((res) => {})
-      .catch((err) => {
-        console.log(err);
-        alert('error');
-      });
-
-    event.preventDefault();
-  }
-
-  render() {
-    return (
-      <div>
-        <div className='project'>
-          <div className='container'>
-            <div className='row'>
-              <div className='col-md-8 m-auto'>
-                <h5 className='display-4 text-center'>Create Wallet</h5>
-                <hr />
-                <form onSubmit={(event) => this.handleSubmit(event)}>
-                  <div className='form-group mb-3'>
-                    <input
-                      type='text'
-                      onChange={(event) => this.changeHandler(event, 'name')}
-                      className='form-control form-control-lg '
-                      placeholder='Account Name'
-                    />
-                  </div>
-                  <div className='form-group mb-3'>
-                    <input
-                      type='text'
-                      onChange={(event) =>
-                        this.changeHandler(event, 'accountNumber')
-                      }
-                      className='form-control form-control-lg'
-                      placeholder='Account No'
-                    />
-                  </div>
-                  <div className='form-group mb-3'>
-                    <textarea
-                      onChange={(event) =>
-                        this.changeHandler(event, 'description')
-                      }
-                      className='form-control form-control-lg'
-                      placeholder='Description'
-                    ></textarea>
-                  </div>
-                  <div className='form-group mb-3'>
-                    <select
-                      onChange={(event) =>
-                        this.changeHandler(event, 'priority')
-                      }
-                      className='form-control form-control-lg'
-                    >
-                      <option value={3}>Display Priority</option>
-                      <option value={1}>High</option>
-                      <option value={2}>Medium</option>
-                      <option value={3}>Low</option>
-                    </select>
-                  </div>
+  return (
+    <div>
+      <div className='project'>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-md-8 m-auto'>
+              <h5 className='display-4 text-center'>Create Wallet</h5>
+              <hr />
+              <form onSubmit={handleSubmit}>
+                <div className='form-group mb-3'>
                   <input
-                    type='submit'
-                    className='btn btn-primary w-100'
-                    value='Create'
+                    type='text'
+                    onChange={changeHandler}
+                    value={name}
+                    className='form-control form-control-lg'
+                    placeholder='Account Name'
+                    name='name'
                   />
-                </form>
-              </div>
+                </div>
+                <div className='form-group mb-3'>
+                  <input
+                    type='text'
+                    onChange={changeHandler}
+                    value={accountNumber}
+                    className='form-control form-control-lg'
+                    placeholder='Account No'
+                    name='accountNumber'
+                  />
+                </div>
+                <div className='form-group mb-3'>
+                  <textarea
+                    onChange={changeHandler}
+                    value={description}
+                    className='form-control form-control-lg'
+                    placeholder='Description'
+                    name='description'
+                  />
+                </div>
+                <div className='form-group mb-3'>
+                  <select
+                    onChange={changeHandler}
+                    value={priority}
+                    className='form-control form-control-lg'
+                    name='priority'
+                  >
+                    <option value={3}>Display Priority</option>
+                    <option value={1}>High</option>
+                    <option value={2}>Medium</option>
+                    <option value={3}>Low</option>
+                  </select>
+                </div>
+                <input
+                  type='submit'
+                  className='btn btn-primary w-100'
+                  value='Create'
+                />
+              </form>
             </div>
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default WalletForm;
