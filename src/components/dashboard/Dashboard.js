@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import DashboardItem from './DashboardItem';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getWallets } from '../../actions/projectActions';
 
 class Dashboard extends Component {
+  componentDidMount() {
+    this.props.getWallets();
+  }
+
   render() {
+    const wallets = this.props.wallets;
+    const walletComponent = wallets.map((wallet) => (
+      <DashboardItem key={wallet.id} wallet={wallet} />
+    ));
     return (
       <div className='projects'>
         <div className='container'>
@@ -14,7 +24,7 @@ class Dashboard extends Component {
               <div className='btn-group'>
                 <button
                   type='button'
-                  className='btn btn-info btn-lg dropdown-toggle'
+                  className='btn btn-info btn-lg dropdown-toggle mb-2'
                   data-toggle='dropdown'
                   aria-haspopup='true'
                   aria-expanded='false'
@@ -38,7 +48,7 @@ class Dashboard extends Component {
                 </div>
               </div>
               <hr />
-              <DashboardItem />
+              {walletComponent}
             </div>
           </div>
         </div>
@@ -46,5 +56,8 @@ class Dashboard extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  wallets: state.wallet.wallets,
+});
 
-export default Dashboard;
+export default connect(mapStateToProps, { getWallets })(Dashboard);

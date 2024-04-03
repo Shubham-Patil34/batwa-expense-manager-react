@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ERRORS } from './types';
+import { GET_ERRORS, GET_WALLETS } from './types';
 
 export const createWallet = (newWallet, navigate) => async (dispatch) => {
   try {
@@ -11,4 +11,9 @@ export const createWallet = (newWallet, navigate) => async (dispatch) => {
   } catch (err) {
     dispatch({ type: GET_ERRORS, payload: err.response.data });
   }
+};
+
+export const getWallets = () => async (dispatch) => {
+  const response = await axios.get('http://localhost:8088/batwa/');
+  dispatch({ type: GET_WALLETS, payload: response.data });
 };
