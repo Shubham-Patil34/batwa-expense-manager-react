@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ERRORS, GET_WALLETS } from './types';
+import { GET_ERRORS, GET_WALLETS, DELETE_WALLET } from './types';
 
 export const createWallet = (newWallet, navigate) => async (dispatch) => {
   try {
@@ -16,4 +16,9 @@ export const createWallet = (newWallet, navigate) => async (dispatch) => {
 export const getWallets = () => async (dispatch) => {
   const response = await axios.get('http://localhost:8088/batwa/');
   dispatch({ type: GET_WALLETS, payload: response.data });
+};
+
+export const deleteWallet = (id) => async (dispatch) => {
+  const response = await axios.delete(`http://localhost:8088/batwa/${id}`);
+  dispatch({ type: DELETE_WALLET, payload: id });
 };
