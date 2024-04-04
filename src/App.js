@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import WalletForm from './components/dashboard/operations/WalletForm';
 import NotFound from './components/common/NotFound';
+import WalletUpdateForm from './components/dashboard/operations/WalletUpdateForm';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/' element={<Welcome />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/createwallet' element={<WalletForm />} />
+          <Route path='/updatewallet/:id' element={<WalletUpdateForm />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>
