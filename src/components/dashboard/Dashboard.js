@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import DashboardItem from './DashboardItem';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getWallets } from '../../actions/projectActions';
+import { getWallets, clearErrors } from '../../actions/projectActions';
 
 class Dashboard extends Component {
   componentDidMount() {
     this.props.getWallets();
+    this.props.clearErrors();
   }
 
   render() {
@@ -17,7 +18,7 @@ class Dashboard extends Component {
 
     let walletTotal = 0.0;
     const getWalletTotal = wallets.map((wallet) => {
-      walletTotal += wallet.currentBalance;
+      walletTotal += parseInt(wallet.currentBalance);
     });
 
     return (
@@ -86,4 +87,4 @@ const mapStateToProps = (state) => ({
   wallets: state.wallet.wallets,
 });
 
-export default connect(mapStateToProps, { getWallets })(Dashboard);
+export default connect(mapStateToProps, { getWallets, clearErrors })(Dashboard);

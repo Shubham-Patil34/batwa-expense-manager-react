@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { createWallet } from '../../../actions/projectActions';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 import classnames from 'classnames';
+import {
+  getWallet,
+  updateWallet,
+} from '../../../actions/projectActions';
 
-const WalletForm = (props) => {
+const WalletUpdateForm = (props) => {
+  const [walletId, setWalletId] = useState('');
   const [name, setName] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
   const [description, setDescription] = useState('');
@@ -14,11 +18,12 @@ const WalletForm = (props) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const { id } = useParams();
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const newWallet = {
+    const updatedWallet = {
+      walletId,
       name,
       accountNumber,
       description,
@@ -26,14 +31,30 @@ const WalletForm = (props) => {
       priority,
     };
 
-    dispatch(createWallet(newWallet, navigate));
+    dispatch(updateWallet(updatedWallet, id, navigate));
   };
 
   useEffect(() => {
     if (props.errors !== errors) {
       setErrors(props.errors);
     }
-  }, [props.errors]);
+
+    dispatch(getWallet(id));
+
+    setName(props.wallet.name);
+    setWalletId(props.wallet.id);
+    setAccountNumber(props.wallet.accountNumber);
+    setDescription(props.wallet.description);
+    setCurrentBalance(props.wallet.currentBalance);
+    setPriority(props.wallet.priority);
+  }, [
+    props.errors,
+    props.wallet.name,
+    props.wallet.accountNumber,
+    props.wallet.description,
+    props.wallet.currentBalance,
+    props.wallet.priority,
+  ]);
 
   const changeHandler = (event) => {
     const { name, value } = event.target;
@@ -64,7 +85,7 @@ const WalletForm = (props) => {
         <div className='container'>
           <div className='row'>
             <div className='col-md-8 m-auto'>
-              <h5 className='display-4 text-center'>Create Wallet</h5>
+              <h5 className='display-4 text-center'>Update Wallet</h5>
               <hr />
               <form onSubmit={handleSubmit}>
                 <div className='form-group mb-3'>
@@ -101,7 +122,7 @@ const WalletForm = (props) => {
                     className={classnames('form-control form-control-lg', {
                       'is-invalid': errors.currentBalance,
                     })}
-                    placeholder='Initial Balance'
+                    placeholder='Balance'
                     name='currentBalance'
                   />
                   <p className='text-danger'>{errors.currentBalance}</p>
@@ -134,7 +155,7 @@ const WalletForm = (props) => {
                 <input
                   type='submit'
                   className='btn btn-primary w-100'
-                  value='Create'
+                  value='Update'
                 />
               </form>
             </div>
@@ -147,6 +168,9 @@ const WalletForm = (props) => {
 
 const mapStateToProps = (state) => ({
   errors: state.errors,
+  wallet: state.wallet.wallet,
 });
 
-export default connect(mapStateToProps, { createWallet })(WalletForm);
+export default connect(mapStateToProps, { getWallet, updateWallet })(
+  WalletUpdateForm
+);
