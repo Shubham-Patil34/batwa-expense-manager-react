@@ -17,7 +17,6 @@ const WalletForm = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const newWallet = {
       name,
       accountNumber,

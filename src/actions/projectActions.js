@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { GET_ERRORS, GET_WALLETS, DELETE_WALLET, GET_WALLET } from './types';
+import Swal from 'sweetalert2';
 
 export const createWallet = (newWallet, navigate) => async (dispatch) => {
   try {
@@ -10,6 +11,7 @@ export const createWallet = (newWallet, navigate) => async (dispatch) => {
     navigate('/dashboard');
   } catch (err) {
     dispatch({ type: GET_ERRORS, payload: err.response.data });
+    checkErr(err.response.data.status);
   }
 };
 
@@ -23,6 +25,7 @@ export const updateWallet =
       navigate('/dashboard');
     } catch (err) {
       dispatch({ type: GET_ERRORS, payload: err.response.data });
+      checkErr(err.response.data.status);
     }
   };
 
@@ -43,4 +46,21 @@ export const deleteWallet = (id) => async (dispatch) => {
 
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: GET_ERRORS, payload: {} });
+};
+
+const checkErr = (err) => {
+  if (err === 400) {
+    let timerInterval;
+    Swal.fire({
+      title: 'Oops...!',
+      html: 'Something went wrong :(',
+      width: '25em',
+      color: '#FB6D6D',
+      timer: 1500,
+      timerProgressBar: true,
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    });
+  }
 };
