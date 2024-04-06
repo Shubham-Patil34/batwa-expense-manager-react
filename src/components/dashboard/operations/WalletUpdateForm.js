@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 import classnames from 'classnames';
-import {
-  getWallet,
-  updateWallet,
-} from '../../../actions/projectActions';
+import { getWallet, updateWallet } from '../../../actions/projectActions';
 
 const WalletUpdateForm = (props) => {
   const [walletId, setWalletId] = useState('');
@@ -30,7 +27,6 @@ const WalletUpdateForm = (props) => {
       currentBalance,
       priority,
     };
-
     dispatch(updateWallet(updatedWallet, id, navigate));
   };
 
@@ -143,7 +139,9 @@ const WalletUpdateForm = (props) => {
                   <select
                     onChange={changeHandler}
                     value={priority}
-                    className='form-control form-control-lg'
+                    className={classnames('form-control form-control-lg', {
+                      'is-invalid': errors.priority,
+                    })}
                     name='priority'
                   >
                     <option value={''}>Display Priority</option>
@@ -151,7 +149,9 @@ const WalletUpdateForm = (props) => {
                     <option value={2}>Medium</option>
                     <option value={3}>Low</option>
                   </select>
+                  <p className='text-danger'>{errors.priority}</p>
                 </div>
+
                 <input
                   type='submit'
                   className='btn btn-primary w-100'
