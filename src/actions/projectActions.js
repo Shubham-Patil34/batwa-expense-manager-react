@@ -6,7 +6,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 export const createWallet = (newWallet, navigate) => async (dispatch) => {
   try {
-    const response = await axios.post(`${apiUrl}/create`, newWallet);
+    const response = await axios.post(`${apiUrl}/batwa`, newWallet);
     navigate('/dashboard');
   } catch (err) {
     dispatch({ type: GET_ERRORS, payload: err.response.data });
@@ -17,7 +17,7 @@ export const createWallet = (newWallet, navigate) => async (dispatch) => {
 export const updateWallet =
   (updatedWallet, id, navigate) => async (dispatch) => {
     try {
-      const response = await axios.put(`${apiUrl}/${id}`, updatedWallet);
+      const response = await axios.put(`${apiUrl}/batwa/${id}`, updatedWallet);
       navigate('/dashboard');
     } catch (err) {
       dispatch({ type: GET_ERRORS, payload: err.response.data });
@@ -26,17 +26,17 @@ export const updateWallet =
   };
 
 export const getWallets = () => async (dispatch) => {
-  const response = await axios.get(`${apiUrl}/`);
+  const response = await axios.get(`${apiUrl}/batwa`);
   dispatch({ type: GET_WALLETS, payload: response.data });
 };
 
 export const getWallet = (id) => async (dispatch) => {
-  const response = await axios.get(`${apiUrl}/${id}`);
+  const response = await axios.get(`${apiUrl}/batwa/${id}`);
   dispatch({ type: GET_WALLET, payload: response.data });
 };
 
 export const deleteWallet = (id) => async (dispatch) => {
-  const response = await axios.delete(`${apiUrl}/${id}`);
+  const response = await axios.delete(`${apiUrl}/batwa/${id}`);
   dispatch({ type: DELETE_WALLET, payload: id });
 };
 

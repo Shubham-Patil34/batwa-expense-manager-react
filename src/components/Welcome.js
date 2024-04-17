@@ -16,10 +16,10 @@ class Welcome extends Component {
                     kitab
                   </p>
                   <hr />
-                  <Link href='register' className='me-2 btn btn-lg btn-primary'>
+                  <Link to='register' className='me-2 btn btn-lg btn-primary'>
                     Sign Up
                   </Link>
-                  <Link href='login' className='me-2 btn btn-lg btn-secondary'>
+                  <Link to='login' className='me-2 btn btn-lg btn-secondary'>
                     Login
                   </Link>
                 </div>
