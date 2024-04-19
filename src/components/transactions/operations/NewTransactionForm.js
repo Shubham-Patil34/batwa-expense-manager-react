@@ -10,11 +10,13 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
   const [type, setType] = useState(1);
   const [date, setDate] = useState(getCurrentDate());
   const [errorsState, setErrorsState] = useState('');
+  const [saving, setSaving] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
+    setSaving(true);
     event.preventDefault();
     const newTransaction = {
       amount,
@@ -22,8 +24,10 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
       type,
       date,
     };
-
-    dispatch(createTransaction(walletId, newTransaction, navigate));
+    const timeout = setTimeout(() => {
+      dispatch(createTransaction(walletId, newTransaction, navigate));
+      setSaving(false);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -142,7 +146,18 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
                 />
                 <p className='text-danger'>{errors.date}</p>
               </div>
-              <input type='submit' className='btn btn-primary btn-block' />
+              <button
+                type='submit'
+                className='btn btn-primary btn-block w-100'
+                disabled={saving}
+              >
+                {!saving && 'Submit'}
+                {saving && (
+                  <div>
+                    <div className='saveData'></div> Saving...
+                  </div>
+                )}
+              </button>
             </form>
           </div>
         </div>
