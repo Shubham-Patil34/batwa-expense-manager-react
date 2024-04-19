@@ -36,18 +36,18 @@ class DashboardItem extends Component {
               </div>
               <div className='col-lg-4 col-md-4 col-6 text-center'>
                 <h3>Balance</h3>
-                <h1>Rs. {wallet.currentBalance}</h1>
+                <h1>Rs. {parseFloat(wallet.currentBalance).toFixed(2)}</h1>
               </div>
               <div className='col-lg-4 col-md-5 col-12 d-lg-block'>
                 <ul className='list-group'>
-                  <a href='transactions.html'>
+                  <Link to={`/transaction/${wallet.id}`}>
                     <li className='list-group-item board text-success'>
                       <i className='fa fa-flag-checkered pr-1'>
                         {' '}
                         View Transactions{' '}
                       </i>
                     </li>
-                  </a>
+                  </Link>
                   <Link to={`/updatewallet/${wallet.id}`}>
                     <li className='list-group-item update text-info'>
                       <i className='fa fa-edit pr-1'> Update Account Info</i>

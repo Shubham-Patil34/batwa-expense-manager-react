@@ -9,6 +9,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import WalletForm from './components/dashboard/operations/WalletForm';
 import NotFound from './components/common/NotFound';
 import WalletUpdateForm from './components/dashboard/operations/WalletUpdateForm';
+import Transaction from './components/transactions/Transaction';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/createwallet' element={<WalletForm />} />
           <Route path='/updatewallet/:id' element={<WalletUpdateForm />} />
+          <Route path='/transaction/:id' element={<Transaction />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>

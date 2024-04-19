@@ -18,7 +18,7 @@ class Dashboard extends Component {
 
     let walletTotal = 0.0;
     const getWalletTotal = wallets.map((wallet) => {
-      walletTotal += parseInt(wallet.currentBalance);
+      walletTotal += parseFloat(wallet.currentBalance);
     });
 
     return (
@@ -51,7 +51,7 @@ class Dashboard extends Component {
               <div className='card text-center'>
                 <div className='card-header bg-success text-white'>
                   <h4>Current Balance (Total)</h4>
-                  <h1>Rs. {walletTotal}</h1>
+                  <h1>Rs. {parseFloat(walletTotal).toFixed(2)}</h1>
                 </div>
               </div>
               <hr />

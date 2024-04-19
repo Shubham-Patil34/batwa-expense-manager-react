@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { GET_ERRORS, GET_WALLETS, DELETE_WALLET, GET_WALLET } from './types';
+import {
+  GET_ERRORS,
+  GET_WALLETS,
+  DELETE_WALLET,
+  GET_WALLET,
+  GET_TRANSACTIONS,
+  DELETE_TRANSACTION,
+} from './types';
 import Swal from 'sweetalert2';
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -42,6 +49,16 @@ export const deleteWallet = (id) => async (dispatch) => {
 
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: GET_ERRORS, payload: {} });
+};
+
+export const getTransactions = (id) => async (dispatch) => {
+  const response = await axios.get(`${apiUrl}/lenden/${id}`);
+  dispatch({ type: GET_TRANSACTIONS, payload: response.data });
+};
+
+export const deleteTransaction = (batwaId, tId) => async (dispatch) => {
+  const response = await axios.delete(`${apiUrl}/lenden/${batwaId}/${tId}`);
+  dispatch({ type: DELETE_TRANSACTION, payload: tId });
 };
 
 const checkErr = (err) => {
