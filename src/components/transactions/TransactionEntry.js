@@ -30,14 +30,10 @@ class TransactionEntry extends Component {
     return (
       <tr className={`table-${bgColorCls}`}>
         <td>{transaction.date}</td>
-        <td>
-          {transaction.type === 1
-            ? 'Income'
-            : transaction.type === 2
-            ? 'Expense'
-            : 'Transfer'}
+        <td>{transaction.description}</td>
+        <td className={`text-${bgColorCls}`}>
+          {parseFloat(transaction.amount).toFixed(2)}
         </td>
-        <td className={`text-${bgColorCls}`}>{transaction.amount}</td>
         <td>
           <Link className='text-info me-3' to='/updateTransactionForm'>
             <i className='far fa-edit fa-2x'></i>

@@ -31,7 +31,7 @@ const Transaction = (props) => {
       <div className='card text-center'>
         <div className='card-header bg-success text-white'>
           <h4>{name} Account Balance</h4>
-          <h1>Rs. {currentBalance}</h1>
+          <h1>Rs. {parseFloat(currentBalance).toFixed(2)}</h1>
         </div>
       </div>
       <hr />
