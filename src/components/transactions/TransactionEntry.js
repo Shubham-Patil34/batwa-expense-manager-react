@@ -40,7 +40,6 @@ class TransactionEntry extends Component {
           </Link>
           <Link
             className='text-info me-3'
-            to={`/transaction/${walletId}`}
             onClick={() => this.deleteBtnClick()}
           >
             <span className='text-danger'>

@@ -40,7 +40,7 @@ class DashboardItem extends Component {
               </div>
               <div className='col-lg-4 col-md-5 col-12 d-lg-block'>
                 <ul className='list-group'>
-                  <Link to={`/transaction/${wallet.id}`}>
+                  <Link to={`/transactions/${wallet.id}`}>
                     <li className='list-group-item board text-success'>
                       <i className='fa fa-flag-checkered pr-1'>
                         {' '}

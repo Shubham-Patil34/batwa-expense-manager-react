@@ -9,7 +9,7 @@ const WalletForm = (props) => {
   const [accountNumber, setAccountNumber] = useState('');
   const [description, setDescription] = useState('');
   const [currentBalance, setCurrentBalance] = useState('');
-  const [priority, setPriority] = useState(0); // Default priority
+  const [priority, setPriority] = useState(''); // Default priority
   const [errors, setErrors] = useState('');
 
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ const WalletForm = (props) => {
         setCurrentBalance(value);
         break;
       case 'priority':
-        setPriority(parseInt(value)); // Parse to integer
+        setPriority(parseFloat(value));
         break;
       default:
         break;
@@ -121,7 +121,9 @@ const WalletForm = (props) => {
                   <select
                     onChange={changeHandler}
                     value={priority}
-                    className='form-control form-control-lg'
+                    className={classnames('form-control form-control-lg', {
+                      'is-invalid': errors.priority,
+                    })}
                     name='priority'
                   >
                     <option value={''}>Display Priority</option>
@@ -129,6 +131,7 @@ const WalletForm = (props) => {
                     <option value={2}>Medium</option>
                     <option value={3}>Low</option>
                   </select>
+                  <p className='text-danger'>{errors.priority}</p>
                 </div>
                 <input
                   type='submit'
