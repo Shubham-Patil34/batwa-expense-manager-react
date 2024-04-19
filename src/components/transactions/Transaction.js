@@ -11,6 +11,7 @@ import TransactionEntry from './TransactionEntry';
 const Transaction = (props) => {
   const [name, setName] = useState('');
   const [currentBalance, setCurrentBalance] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
   const { walletId } = useParams();
@@ -22,10 +23,16 @@ const Transaction = (props) => {
     dispatch(clearErrors());
     setName(props.wallet.name);
     setCurrentBalance(props.wallet.currentBalance);
+    setLoading(false);
   }, [props.wallet.name, props.transactions]);
 
   return (
     <div className='container'>
+      {loading && (
+        <div className='loader-container'>
+          <div className='loader'></div>
+        </div>
+      )}
       <Link to='/dashboard' className='btn btn-light btn-lg mb-3 me-2'>
         Back
       </Link>

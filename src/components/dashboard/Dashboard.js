@@ -5,9 +5,18 @@ import { connect } from 'react-redux';
 import { getWallets, clearErrors } from '../../actions/projectActions';
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+    };
+  }
+
   componentDidMount() {
     this.props.getWallets();
     this.props.clearErrors();
+
+    this.setState({ loading: false });
   }
 
   render() {
@@ -21,8 +30,15 @@ class Dashboard extends Component {
       walletTotal += parseFloat(wallet.currentBalance);
     });
 
+    const { loading } = this.state;
+
     return (
       <div className='projects'>
+        {loading && (
+          <div className='loader-container'>
+            <div className='loader'></div>
+          </div>
+        )}
         <div className='container'>
           <div className='row'>
             <div className='col-md-12'>

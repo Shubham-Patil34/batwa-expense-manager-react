@@ -11,11 +11,13 @@ const WalletForm = (props) => {
   const [currentBalance, setCurrentBalance] = useState('');
   const [priority, setPriority] = useState(''); // Default priority
   const [errors, setErrors] = useState('');
+  const [saving, setSaving] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
+    setSaving(true);
     event.preventDefault();
     const newWallet = {
       name,
@@ -25,7 +27,10 @@ const WalletForm = (props) => {
       priority,
     };
 
-    dispatch(createWallet(newWallet, navigate));
+    const timeout = setTimeout(() => {
+      dispatch(createWallet(newWallet, navigate));
+      setSaving(false);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -133,11 +138,18 @@ const WalletForm = (props) => {
                   </select>
                   <p className='text-danger'>{errors.priority}</p>
                 </div>
-                <input
+                <button
                   type='submit'
-                  className='btn btn-primary w-100'
-                  value='Create'
-                />
+                  className='btn btn-primary btn-block w-100'
+                  disabled={saving}
+                >
+                  {!saving && 'Create'}
+                  {saving && (
+                    <div>
+                      <div className='saveData'></div> Creating...
+                    </div>
+                  )}
+                </button>
               </form>
             </div>
           </div>
