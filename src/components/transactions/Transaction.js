@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
-import { getTransactions, getWallet } from '../../actions/projectActions';
+import {
+  getTransactions,
+  getWallet,
+  clearErrors,
+} from '../../actions/projectActions';
 import TransactionEntry from './TransactionEntry';
 
 const Transaction = (props) => {
@@ -9,19 +13,20 @@ const Transaction = (props) => {
   const [currentBalance, setCurrentBalance] = useState('');
 
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { walletId } = useParams();
   const data = props.transactions;
 
   useEffect(() => {
-    dispatch(getWallet(id));
-    dispatch(getTransactions(id));
+    dispatch(getWallet(walletId));
+    dispatch(getTransactions(walletId));
+    dispatch(clearErrors());
     setName(props.wallet.name);
     setCurrentBalance(props.wallet.currentBalance);
   }, [props.wallet.name, props.transactions]);
 
   return (
     <div className='container'>
-      <Link to='/dashboard' className='btn btn-default btn-lg mb-3'>
+      <Link to='/dashboard' className='btn btn-light btn-lg mb-3 me-2'>
         Back
       </Link>
       <Link to='/newTransactionForm' className='btn btn-info btn-lg mb-3'>
@@ -49,7 +54,7 @@ const Transaction = (props) => {
             <TransactionEntry
               key={transaction.id}
               transaction={transaction}
-              id={id}
+              id={walletId}
             />
           ))}
         </tbody>

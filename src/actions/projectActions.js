@@ -51,6 +51,20 @@ export const clearErrors = () => async (dispatch) => {
   dispatch({ type: GET_ERRORS, payload: {} });
 };
 
+export const createTransaction =
+  (batwaId, newTransaction, navigate) => async (dispatch) => {
+    try {
+      const response = await axios.post(
+        `${apiUrl}/lenden/${batwaId}`,
+        newTransaction
+      );
+      navigate(`/transactions/${batwaId}`);
+    } catch (err) {
+      dispatch({ type: GET_ERRORS, payload: err.response.data });
+      checkErr(err.response.data.status);
+    }
+  };
+
 export const getTransactions = (id) => async (dispatch) => {
   const response = await axios.get(`${apiUrl}/lenden/${id}`);
   dispatch({ type: GET_TRANSACTIONS, payload: response.data });
