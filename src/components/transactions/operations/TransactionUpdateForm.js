@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
-import { createTransaction } from '../../../actions/projectActions';
+import {
+  getTransaction,
+  updateTransaction,
+} from '../../../actions/projectActions';
 import classnames from 'classnames';
 
-const NewTransactionForm = ({ walletId, walletName, errors }) => {
+const TransactionUpdateForm = ({
+  walletId,
+  walletName,
+  errors,
+  transaction,
+}) => {
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
-  const [type, setType] = useState(1);
+  const [type, setType] = useState('');
   const [date, setDate] = useState(getCurrentDate());
   const [errorsState, setErrorsState] = useState('');
   const [saving, setSaving] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { transactionId } = useParams();
 
   const handleSubmit = async (event) => {
     setSaving(true);
@@ -25,7 +34,9 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
       date,
     };
     const timeout = setTimeout(() => {
-      dispatch(createTransaction(walletId, newTransaction, navigate));
+      dispatch(
+        updateTransaction(walletId, transactionId, newTransaction, navigate)
+      );
       setSaving(false);
     }, 1000);
   };
@@ -34,7 +45,19 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
     if (errors !== errorsState) {
       setErrorsState(errors);
     }
-  }, [errors]);
+
+    dispatch(getTransaction(walletId, transactionId));
+    setAmount(transaction.amount);
+    setDescription(transaction.description);
+    setType(transaction.type);
+    setDate(transaction.date);
+  }, [
+    errors,
+    transaction.amount,
+    transaction.description,
+    transaction.type,
+    transaction.date,
+  ]);
 
   const changeHandler = (event) => {
     const { name, value } = event.target;
@@ -82,7 +105,7 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
             })}
           >
             <div className='col-11 m-auto'>
-              <h6 className='display-6 text-center'>Record New Transaction</h6>
+              <h6 className='display-6 text-center'>Update Transaction</h6>
               <p className='lead text-center'>{walletName} Account</p>
               <form onSubmit={handleSubmit}>
                 <div className='form-group mb-2'>
@@ -107,6 +130,7 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
                     })}
                     placeholder='Description'
                     name='description'
+                    value={description}
                     onChange={changeHandler}
                   ></textarea>
                   <p className='text-danger'>{errors.description}</p>
@@ -114,10 +138,11 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
                 <div className='form-group  mb-2'>
                   <div className='form-check form-check-inline'>
                     <input
-                      defaultChecked
+                      checked={type === 1}
                       className='form-check-input'
                       type='radio'
                       name='type'
+                      disabled={type !== 1}
                       onChange={changeHandler}
                       id='income'
                       value='1'
@@ -128,11 +153,11 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
                   </div>
                   <div className='form-check form-check-inline'>
                     <input
-                      className={classnames('form-check-input', {
-                        'is-invalid': errors.type,
-                      })}
+                      className='form-check-input'
+                      checked={type === 2}
                       type='radio'
                       name='type'
+                      disabled={type !== 2}
                       onChange={changeHandler}
                       id='expense'
                       value='2'
@@ -161,10 +186,10 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
                   className='btn btn-primary btn-block w-100'
                   disabled={saving}
                 >
-                  {!saving && 'Submit'}
+                  {!saving && 'Update'}
                   {saving && (
                     <div>
-                      <div className='saveData'></div> Saving...
+                      <div className='saveData'></div> Updating...
                     </div>
                   )}
                 </button>
@@ -181,8 +206,9 @@ const mapStateToProps = (state) => ({
   walletId: state.wallet.wallet.id,
   walletName: state.wallet.wallet.name,
   errors: state.errors,
+  transaction: state.transaction.transaction,
 });
 
-export default connect(mapStateToProps, { createTransaction })(
-  NewTransactionForm
+export default connect(mapStateToProps, { updateTransaction })(
+  TransactionUpdateForm
 );

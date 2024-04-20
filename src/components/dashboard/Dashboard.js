@@ -42,12 +42,11 @@ class Dashboard extends Component {
         <div className='container'>
           <div className='row'>
             <div className='col-md-12'>
-              <h1 className='display-4 text-center'>My Wallets</h1>
-              <br />
+              <h1 className='display-5 text-center'>My Wallets</h1>
               <div className='btn-group'>
                 <button
                   type='button'
-                  className='btn btn-info btn-lg dropdown-toggle mb-2'
+                  className='btn btn-outline-primary dropdown-toggle mb-2'
                   data-toggle='dropdown'
                   aria-haspopup='true'
                   aria-expanded='false'

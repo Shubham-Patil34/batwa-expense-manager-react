@@ -28,14 +28,17 @@ class TransactionEntry extends Component {
     const bgColorCls = transaction.type === 1 ? 'success ' : 'danger';
 
     return (
-      <tr className={`table-${bgColorCls}`}>
+      <tr className={`table-secondary`}>
         <td>{transaction.date}</td>
         <td>{transaction.description}</td>
         <td className={`text-${bgColorCls}`}>
           {parseFloat(transaction.amount).toFixed(2)}
         </td>
         <td>
-          <Link className='text-info me-3' to='/updateTransactionForm'>
+          <Link
+            className='text-info me-3'
+            to={`/updateTransaction/${transaction.id}`}
+          >
             <i className='far fa-edit fa-2x'></i>
           </Link>
           <Link

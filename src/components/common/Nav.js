@@ -5,7 +5,7 @@ class Nav extends Component {
   render() {
     return (
       <div>
-        <nav className='navbar navbar-expand-sm navbar-dark bg-primary mb-4'>
+        <nav className='navbar navbar-expand-sm navbar-dark bg-primary mb-3'>
           <div className='container'>
             <Link className='navbar-brand' to='/'>
               Expense Manager
@@ -30,12 +30,12 @@ class Nav extends Component {
 
               <ul className='navbar-nav ms-auto'>
                 <li className='nav-item'>
-                  <Link className='nav-link ' to='register'>
+                  <Link className='nav-link ' to='/register'>
                     Sign Up
                   </Link>
                 </li>
                 <li className='nav-item'>
-                  <Link className='nav-link' to='login'>
+                  <Link className='nav-link' to='/login'>
                     Login
                   </Link>
                 </li>

@@ -13,6 +13,30 @@ body {
   margin-right: 10px;
 }
 
+/* Form */
+.bg-form {
+  padding: 30px 0px;
+  border: solid 2px #00ccff;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background-color: #b7e7f370;
+}
+
+.bg-form-expense {
+  background-color: #f5adad70;
+  border-color: #f70000;
+}
+
+.bg-form-income {
+  background-color: #b1f1cb70;
+  border-color: #00f721;
+}
+
+.bg-form-transfer {
+  background-color: #c27efd70;
+  border-color: #ce00f7;
+}
+
 /* Loader */
 
 .loader-container {
