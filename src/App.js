@@ -11,6 +11,7 @@ import NotFound from './components/common/NotFound';
 import WalletUpdateForm from './components/dashboard/operations/WalletUpdateForm';
 import Transaction from './components/transactions/Transaction';
 import NewTransactionForm from './components/transactions/operations/NewTransactionForm';
+import TransactionUpdateForm from './components/transactions/operations/TransactionUpdateForm';
 
 function App() {
   return (
@@ -23,7 +24,11 @@ function App() {
           <Route path='/createwallet' element={<WalletForm />} />
           <Route path='/updatewallet/:id' element={<WalletUpdateForm />} />
           <Route path='/transactions/:walletId' element={<Transaction />} />
-          <Route path='/newTransactionForm' element={<NewTransactionForm />} />
+          <Route path='/newTransaction' element={<NewTransactionForm />} />
+          <Route
+            path='/updateTransaction/:transactionId'
+            element={<TransactionUpdateForm />}
+          />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>

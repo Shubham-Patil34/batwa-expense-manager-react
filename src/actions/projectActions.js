@@ -5,6 +5,7 @@ import {
   DELETE_WALLET,
   GET_WALLET,
   GET_TRANSACTIONS,
+  GET_TRANSACTION,
   DELETE_TRANSACTION,
 } from './types';
 import Swal from 'sweetalert2';
@@ -65,9 +66,31 @@ export const createTransaction =
     }
   };
 
+export const updateTransaction =
+  (batwaId, transactionId, updatedTransaction, navigate) =>
+  async (dispatch) => {
+    try {
+      const response = await axios.put(
+        `${apiUrl}/lenden/${batwaId}/${transactionId}`,
+        updatedTransaction
+      );
+      navigate(`/transactions/${batwaId}`);
+    } catch (err) {
+      dispatch({ type: GET_ERRORS, payload: err.response.data });
+      checkErr(err.response.data.status);
+    }
+  };
+
 export const getTransactions = (id) => async (dispatch) => {
   const response = await axios.get(`${apiUrl}/lenden/${id}`);
   dispatch({ type: GET_TRANSACTIONS, payload: response.data });
+};
+
+export const getTransaction = (batwaId, transactionId) => async (dispatch) => {
+  const response = await axios.get(
+    `${apiUrl}/lenden/${batwaId}/${transactionId}`
+  );
+  dispatch({ type: GET_TRANSACTION, payload: response.data });
 };
 
 export const deleteTransaction = (batwaId, tId) => async (dispatch) => {

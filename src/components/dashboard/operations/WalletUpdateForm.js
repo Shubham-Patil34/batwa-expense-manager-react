@@ -76,89 +76,87 @@ const WalletUpdateForm = (props) => {
   };
 
   return (
-    <div>
-      <div className='project'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-md-8 m-auto'>
-              <h5 className='display-4 text-center'>Update Wallet</h5>
-              <hr />
-              <form onSubmit={handleSubmit}>
-                <div className='form-group mb-3'>
-                  <input
-                    type='text'
-                    onChange={changeHandler}
-                    value={name}
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.name,
-                    })}
-                    placeholder='Account Name'
-                    name='name'
-                  />
-                  <p className='text-danger'>{errors.name}</p>
-                </div>
-                <div className='form-group mb-3'>
-                  <input
-                    type='text'
-                    onChange={changeHandler}
-                    value={accountNumber}
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.accountNumber,
-                    })}
-                    placeholder='Account No'
-                    name='accountNumber'
-                  />
-                  <p className='text-danger'>{errors.accountNumber}</p>
-                </div>
-                <div className='form-group mb-3'>
-                  <input
-                    type='text'
-                    onChange={changeHandler}
-                    value={currentBalance}
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.currentBalance,
-                    })}
-                    placeholder='Balance'
-                    name='currentBalance'
-                  />
-                  <p className='text-danger'>{errors.currentBalance}</p>
-                </div>
-                <div className='form-group mb-3'>
-                  <textarea
-                    onChange={changeHandler}
-                    value={description}
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.description,
-                    })}
-                    placeholder='Description'
-                    name='description'
-                  />
-                  <p className='text-danger'>{errors.description}</p>
-                </div>
-                <div className='form-group mb-3'>
-                  <select
-                    onChange={changeHandler}
-                    value={priority}
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.priority,
-                    })}
-                    name='priority'
-                  >
-                    <option value={''}>Display Priority</option>
-                    <option value={1}>High</option>
-                    <option value={2}>Medium</option>
-                    <option value={3}>Low</option>
-                  </select>
-                  <p className='text-danger'>{errors.priority}</p>
-                </div>
-
+    <div className='container'>
+      <div className='row'>
+        <div className='col-10 col-md-8 col-lg-6 m-auto bg-form'>
+          <div className='col-11 m-auto'>
+            <h6 className='display-6 text-center'>Update Wallet</h6>
+            <hr />
+            <form onSubmit={handleSubmit}>
+              <div className='form-group mb-3'>
                 <input
-                  type='submit'
-                  className='btn btn-primary w-100'
-                  value='Update'
+                  type='text'
+                  onChange={changeHandler}
+                  value={name}
+                  className={classnames('form-control form-control-lg', {
+                    'is-invalid': errors.name,
+                  })}
+                  placeholder='Account Name'
+                  name='name'
                 />
-              </form>
-            </div>
+                <p className='text-danger'>{errors.name}</p>
+              </div>
+              <div className='form-group mb-3'>
+                <input
+                  type='text'
+                  onChange={changeHandler}
+                  value={accountNumber}
+                  className={classnames('form-control form-control-lg', {
+                    'is-invalid': errors.accountNumber,
+                  })}
+                  placeholder='Account No'
+                  name='accountNumber'
+                />
+                <p className='text-danger'>{errors.accountNumber}</p>
+              </div>
+              <div className='form-group mb-3'>
+                <input
+                  type='text'
+                  onChange={changeHandler}
+                  value={currentBalance}
+                  className={classnames('form-control form-control-lg', {
+                    'is-invalid': errors.currentBalance,
+                  })}
+                  placeholder='Balance'
+                  name='currentBalance'
+                />
+                <p className='text-danger'>{errors.currentBalance}</p>
+              </div>
+              <div className='form-group mb-3'>
+                <textarea
+                  onChange={changeHandler}
+                  value={description}
+                  className={classnames('form-control form-control-lg', {
+                    'is-invalid': errors.description,
+                  })}
+                  placeholder='Description'
+                  name='description'
+                />
+                <p className='text-danger'>{errors.description}</p>
+              </div>
+              <div className='form-group mb-3'>
+                <select
+                  onChange={changeHandler}
+                  value={priority}
+                  className={classnames('form-control form-control-lg', {
+                    'is-invalid': errors.priority,
+                  })}
+                  name='priority'
+                >
+                  <option value={''}>Display Priority</option>
+                  <option value={1}>High</option>
+                  <option value={2}>Medium</option>
+                  <option value={3}>Low</option>
+                </select>
+                <p className='text-danger'>{errors.priority}</p>
+              </div>
+
+              <input
+                type='submit'
+                className='btn btn-primary w-100'
+                value='Update'
+              />
+            </form>
           </div>
         </div>
       </div>

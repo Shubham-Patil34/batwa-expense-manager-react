@@ -12,8 +12,8 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case GET_TRANSACTIONS:
       return { ...state, transactions: action.payload };
-    // case GET_TRANSACTION:
-    //   return { ...state, transaction: action.payload };
+    case GET_TRANSACTION:
+      return { ...state, transaction: action.payload };
     case DELETE_TRANSACTION:
       return {
         ...state,
