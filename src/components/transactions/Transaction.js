@@ -75,6 +75,7 @@ const Transaction = (props) => {
               <th scope='col'>Description</th>
               <th scope='col'>Amount</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>

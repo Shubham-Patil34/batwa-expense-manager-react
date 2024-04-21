@@ -41,7 +41,7 @@ class DashboardItem extends Component {
               <div className='col-lg-4 col-md-5 col-12 d-lg-block'>
                 <ul className='list-group'>
                   <Link to={`/transactions/${wallet.id}`}>
-                    <li className='list-group-item board text-success'>
+                    <li className='list-group-item board text-success click-text'>
                       <i className='fa fa-flag-checkered pr-1'>
                         {' '}
                         View Transactions{' '}
@@ -49,12 +49,12 @@ class DashboardItem extends Component {
                     </li>
                   </Link>
                   <Link to={`/updatewallet/${wallet.id}`}>
-                    <li className='list-group-item update text-info'>
+                    <li className='list-group-item update text-info click-text'>
                       <i className='fa fa-edit pr-1'> Update Account Info</i>
                     </li>
                   </Link>
                   <Link to='/dashboard' onClick={() => this.deleteBtnClick()}>
-                    <li className='list-group-item delete text-danger'>
+                    <li className='list-group-item delete text-danger click-text'>
                       <i className='fa fa-minus-circle pr-1'> Delete Account</i>
                     </li>
                   </Link>
