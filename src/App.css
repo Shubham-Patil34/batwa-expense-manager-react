@@ -37,6 +37,18 @@ body {
   border-color: #ce00f7;
 }
 
+.click-text:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s;
+  transform: scale(1.03);
+  z-index: 1;
+}
+
+.click-icon:hover {
+  transform: scale(1.4);
+  transition: transform 0.2s;
+}
+
 /* Loader */
 
 .loader-container {

@@ -34,19 +34,18 @@ class TransactionEntry extends Component {
         <td className={`text-${bgColorCls}`}>
           {parseFloat(transaction.amount).toFixed(2)}
         </td>
-        <td>
+        <td className='text-end'>
           <Link
-            className='text-info me-3'
+            className='text-info'
             to={`/updateTransaction/${transaction.id}`}
           >
-            <i className='far fa-edit fa-2x'></i>
+            <i className='far fa-edit click-icon'></i>
           </Link>
-          <Link
-            className='text-info me-3'
-            onClick={() => this.deleteBtnClick()}
-          >
+        </td>
+        <td className='text-start'>
+          <Link className='text-info' onClick={() => this.deleteBtnClick()}>
             <span className='text-danger'>
-              <i className='fas fa-trash-alt fa-2x'></i>
+              <i className='fas fa-trash-alt click-icon'></i>
             </span>
           </Link>
         </td>
