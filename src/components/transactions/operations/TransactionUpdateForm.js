@@ -8,8 +8,9 @@ import {
 import classnames from 'classnames';
 
 const TransactionUpdateForm = ({
-  walletId,
+  batwaId,
   walletName,
+  wallets,
   errors,
   transaction,
 }) => {
@@ -19,6 +20,7 @@ const TransactionUpdateForm = ({
   const [date, setDate] = useState(getCurrentDate());
   const [errorsState, setErrorsState] = useState('');
   const [saving, setSaving] = useState(false);
+  const [toBatwaId, setToBatwaId] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,10 +34,12 @@ const TransactionUpdateForm = ({
       description,
       type,
       date,
+      batwaId,
+      toBatwaId,
     };
     const timeout = setTimeout(() => {
       dispatch(
-        updateTransaction(walletId, transactionId, newTransaction, navigate)
+        updateTransaction(batwaId, transactionId, newTransaction, navigate)
       );
       setSaving(false);
     }, 1000);
@@ -46,7 +50,7 @@ const TransactionUpdateForm = ({
       setErrorsState(errors);
     }
 
-    dispatch(getTransaction(walletId, transactionId));
+    dispatch(getTransaction(batwaId, transactionId));
     setAmount(transaction.amount);
     setDescription(transaction.description);
     setType(transaction.type);
@@ -71,6 +75,9 @@ const TransactionUpdateForm = ({
       case 'type':
         setType(parseInt(value));
         break;
+      case 'toBatwaId':
+        setToBatwaId(parseInt(value));
+        break;
       case 'date':
         setDate(value);
         break;
@@ -92,7 +99,7 @@ const TransactionUpdateForm = ({
       <div className='row'>
         <div className='col-10 col-md-8 col-lg-6 m-auto '>
           <Link
-            to={`/transactions/${walletId}`}
+            to={`/transactions/${batwaId}`}
             className='btn btn-outline-secondary mb-2'
           >
             Back to Wallet
@@ -166,8 +173,46 @@ const TransactionUpdateForm = ({
                       Expense
                     </label>
                   </div>
+                  <div className='form-check form-check-inline'>
+                    <input
+                      className='form-check-input'
+                      checked={type === 3}
+                      type='radio'
+                      name='type'
+                      disabled={type !== 3}
+                      onChange={changeHandler}
+                      id='transfer'
+                      value='3'
+                    />
+                    <label className='form-check-label' htmlFor='transfer'>
+                      Transfer
+                    </label>
+                  </div>
                   <p className='text-danger'>{errors.type}</p>
                 </div>
+                {type === 3 && (
+                  <div className='form-group mb-2'>
+                    <select
+                      id='walletSelect'
+                      name='toBatwaId'
+                      onChange={changeHandler}
+                      className={classnames('form-control form-control-lg', {
+                        'is-invalid': errors.toBatwaIdValid,
+                      })}
+                    >
+                      <option value=''>Transfer to account</option>
+                      {wallets.map(
+                        (wallet) =>
+                          wallet.id !== batwaId && (
+                            <option key={wallet.id} value={wallet.id}>
+                              {wallet.name}
+                            </option>
+                          )
+                      )}
+                    </select>
+                    <p className='text-danger'>{errors.toBatwaIdValid}</p>
+                  </div>
+                )}
                 <h6>Transaction Date</h6>
                 <div className='form-group mb-2'>
                   <input
@@ -203,8 +248,9 @@ const TransactionUpdateForm = ({
 };
 
 const mapStateToProps = (state) => ({
-  walletId: state.wallet.wallet.id,
+  batwaId: state.wallet.wallet.id,
   walletName: state.wallet.wallet.name,
+  wallets: state.wallet.wallets,
   errors: state.errors,
   transaction: state.transaction.transaction,
 });
