@@ -4,13 +4,14 @@ import { connect, useDispatch } from 'react-redux';
 import { createTransaction } from '../../../actions/projectActions';
 import classnames from 'classnames';
 
-const NewTransactionForm = ({ walletId, walletName, errors }) => {
+const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState(1);
   const [date, setDate] = useState(getCurrentDate());
   const [errorsState, setErrorsState] = useState('');
   const [saving, setSaving] = useState(false);
+  const [toBatwaId, setToBatwaId] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -18,14 +19,18 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
   const handleSubmit = async (event) => {
     setSaving(true);
     event.preventDefault();
+
     const newTransaction = {
       amount,
       description,
       type,
       date,
+      batwaId,
+      toBatwaId,
     };
+
     const timeout = setTimeout(() => {
-      dispatch(createTransaction(walletId, newTransaction, navigate));
+      dispatch(createTransaction(batwaId, toBatwaId, newTransaction, navigate));
       setSaving(false);
     }, 1000);
   };
@@ -48,6 +53,9 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
       case 'type':
         setType(parseInt(value));
         break;
+      case 'toBatwaId':
+        setToBatwaId(parseInt(value));
+        break;
       case 'date':
         setDate(value);
         break;
@@ -69,7 +77,7 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
       <div className='row'>
         <div className='col-10 col-md-8 col-lg-6 m-auto '>
           <Link
-            to={`/transactions/${walletId}`}
+            to={`/transactions/${batwaId}`}
             className='btn btn-outline-secondary mb-2'
           >
             Back to Wallet
@@ -141,8 +149,44 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
                       Expense
                     </label>
                   </div>
+                  <div className='form-check form-check-inline'>
+                    <input
+                      className='form-check-input'
+                      type='radio'
+                      name='type'
+                      onChange={changeHandler}
+                      id='transfer'
+                      value='3'
+                    />
+                    <label className='form-check-label' htmlFor='transfer'>
+                      Transfer
+                    </label>
+                  </div>
                   <p className='text-danger'>{errors.type}</p>
                 </div>
+                {type === 3 && (
+                  <div className='form-group mb-2'>
+                    <select
+                      id='walletSelect'
+                      name='toBatwaId'
+                      onChange={changeHandler}
+                      className={classnames('form-control form-control-lg', {
+                        'is-invalid': errors.toBatwaIdValid,
+                      })}
+                    >
+                      <option value=''>Transfer to account</option>
+                      {wallets.map(
+                        (wallet) =>
+                          wallet.id !== batwaId && (
+                            <option key={wallet.id} value={wallet.id}>
+                              {wallet.name}
+                            </option>
+                          )
+                      )}
+                    </select>
+                    <p className='text-danger'>{errors.toBatwaIdValid}</p>
+                  </div>
+                )}
                 <h6>Transaction Date</h6>
                 <div className='form-group mb-2'>
                   <input
@@ -178,8 +222,9 @@ const NewTransactionForm = ({ walletId, walletName, errors }) => {
 };
 
 const mapStateToProps = (state) => ({
-  walletId: state.wallet.wallet.id,
+  batwaId: state.wallet.wallet.id,
   walletName: state.wallet.wallet.name,
+  wallets: state.wallet.wallets,
   errors: state.errors,
 });
 

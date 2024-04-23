@@ -36,7 +36,12 @@ class DashboardItem extends Component {
               </div>
               <div className='col-lg-4 col-md-4 col-6 text-center'>
                 <h3>Balance</h3>
-                <h1>Rs. {parseFloat(wallet.currentBalance).toFixed(2)}</h1>
+                <h2 className='d-none d-sm-block'>
+                  Rs. {parseFloat(wallet.currentBalance).toFixed(2)}
+                </h2>
+                <h4 className='d-sm-none d-block'>
+                  Rs. {parseFloat(wallet.currentBalance).toFixed(2)}
+                </h4>
               </div>
               <div className='col-lg-4 col-md-5 col-12 d-lg-block'>
                 <ul className='list-group'>

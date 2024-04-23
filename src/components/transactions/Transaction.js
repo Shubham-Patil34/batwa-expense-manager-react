@@ -71,11 +71,12 @@ const Transaction = (props) => {
         <table className='table text-center'>
           <thead className='thead-dark'>
             <tr>
+              <th>Account</th>
               <th scope='col'>Date</th>
               <th scope='col'>Description</th>
               <th scope='col'>Amount</th>
               <th></th>
-              <th></th>
+              <th className='d-none d-sm-table-cell'></th>
             </tr>
           </thead>
           <tbody>
@@ -84,6 +85,7 @@ const Transaction = (props) => {
                 key={transaction.id}
                 transaction={transaction}
                 id={walletId}
+                name={name}
               />
             ))}
           </tbody>

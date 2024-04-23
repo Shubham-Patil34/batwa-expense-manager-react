@@ -53,12 +53,9 @@ export const clearErrors = () => async (dispatch) => {
 };
 
 export const createTransaction =
-  (batwaId, newTransaction, navigate) => async (dispatch) => {
+  (batwaId, toBatwaId, newTransaction, navigate) => async (dispatch) => {
     try {
-      const response = await axios.post(
-        `${apiUrl}/lenden/${batwaId}`,
-        newTransaction
-      );
+      const response = await axios.post(`${apiUrl}/lenden`, newTransaction);
       navigate(`/transactions/${batwaId}`);
     } catch (err) {
       dispatch({ type: GET_ERRORS, payload: err.response.data });
@@ -71,7 +68,7 @@ export const updateTransaction =
   async (dispatch) => {
     try {
       const response = await axios.put(
-        `${apiUrl}/lenden/${batwaId}/${transactionId}`,
+        `${apiUrl}/lenden/${transactionId}`,
         updatedTransaction
       );
       navigate(`/transactions/${batwaId}`);
