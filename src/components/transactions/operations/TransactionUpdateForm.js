@@ -79,7 +79,6 @@ const TransactionUpdateForm = ({
         setType(parseInt(value));
         if (value !== 3) {
           setToBatwaId('');
-          setFromBatwaId('');
         }
         break;
       case 'toBatwaId':
@@ -219,7 +218,7 @@ const TransactionUpdateForm = ({
                               <option
                                 key={wallet.id}
                                 value={wallet.id}
-                                selected={wallet.id === transaction.batwaId}
+                                selected={wallet.id === fromBatwaId}
                               >
                                 {wallet.name}
                               </option>
@@ -246,7 +245,7 @@ const TransactionUpdateForm = ({
                               <option
                                 key={wallet.id}
                                 value={wallet.id}
-                                selected={wallet.id === transaction.toBatwaId}
+                                selected={wallet.id === toBatwaId}
                               >
                                 {wallet.name}
                               </option>
