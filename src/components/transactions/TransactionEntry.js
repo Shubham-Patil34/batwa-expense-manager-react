@@ -20,7 +20,10 @@ class TransactionEntry extends Component {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.props.deleteTransaction(this.props.id, this.props.transaction.id);
+        this.props.deleteTransaction(
+          this.props.transaction.batwaId,
+          this.props.transaction.id
+        );
         Swal.fire('Deleted!', 'The transaction has been deleted.', 'success');
       }
     });
