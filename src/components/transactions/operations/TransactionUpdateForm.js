@@ -55,6 +55,7 @@ const TransactionUpdateForm = ({
     setDescription(transaction.description);
     setType(transaction.type);
     setDate(transaction.date);
+    setToBatwaId(transaction.toBatwaId);
   }, [
     errors,
     transaction.amount,
@@ -191,25 +192,72 @@ const TransactionUpdateForm = ({
                   <p className='text-danger'>{errors.type}</p>
                 </div>
                 {type === 3 && (
-                  <div className='form-group mb-2'>
-                    <select
-                      id='walletSelect'
-                      name='toBatwaId'
-                      onChange={changeHandler}
-                      className={classnames('form-control form-control-lg', {
-                        'is-invalid': errors.toBatwaIdValid,
-                      })}
-                    >
-                      <option value=''>Transfer to account</option>
-                      {wallets.map(
+                  <div className='row form-group mb-2'>
+                    <div className='col-5'>
+                      <select
+                        id='walletSelect'
+                        name='toBatwaId'
+                        onChange={changeHandler}
+                        className={classnames('form-control form-control-lg', {
+                          'is-invalid': errors.toBatwaIdValid,
+                        })}
+                        disabled
+                      >
+                        <option value=''>Transfer to account</option>
+                        {/* {wallets.map(
                         (wallet) =>
                           wallet.id !== batwaId && (
                             <option key={wallet.id} value={wallet.id}>
                               {wallet.name}
                             </option>
                           )
-                      )}
-                    </select>
+                      )} */}
+                        <option
+                          key={transaction.toBatwaId}
+                          value={transaction.toBatwaId}
+                          selected
+                        >
+                          {
+                            wallets.find(
+                              (wallet) => wallet.id === transaction.batwaId
+                            )?.name
+                          }
+                        </option>
+                      </select>
+                    </div>
+                    <div className='col-1 arrow m-auto '></div>
+                    <div className='col-5'>
+                      <select
+                        id='walletSelect'
+                        name='toBatwaId'
+                        onChange={changeHandler}
+                        className={classnames('form-control form-control-lg', {
+                          'is-invalid': errors.toBatwaIdValid,
+                        })}
+                        disabled
+                      >
+                        <option value=''>Transfer to account</option>
+                        {/* {wallets.map(
+                        (wallet) =>
+                          wallet.id !== batwaId && (
+                            <option key={wallet.id} value={wallet.id}>
+                              {wallet.name}
+                            </option>
+                          )
+                      )} */}
+                        <option
+                          key={transaction.toBatwaId}
+                          value={transaction.toBatwaId}
+                          selected
+                        >
+                          {
+                            wallets.find(
+                              (wallet) => wallet.id === transaction.toBatwaId
+                            )?.name
+                          }
+                        </option>
+                      </select>
+                    </div>
                     <p className='text-danger'>{errors.toBatwaIdValid}</p>
                   </div>
                 )}
