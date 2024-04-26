@@ -8,7 +8,7 @@ class DashboardItem extends Component {
   deleteBtnClick = () => {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Do you want to delete this wallet?',
+      text: 'Deleting the wallet will remove all transactions..!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -32,7 +32,10 @@ class DashboardItem extends Component {
             <div className='row'>
               <div className='col-lg-4 col-md-3 col-6'>
                 <h3>{wallet.name}</h3>
-                <p>Account Number: {wallet.accountNumber}</p>
+                {wallet.accountNumber && (
+                  <p className='mb-0'>Account Number: {wallet.accountNumber}</p>
+                )}
+                {wallet.description && <p>{wallet.description}</p>}
               </div>
               <div className='col-lg-4 col-md-4 col-6 text-center'>
                 <h3>Balance</h3>
