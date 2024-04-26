@@ -178,7 +178,7 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
                   </div>
                   <p className='text-danger'>{errors.type}</p>
                 </div>
-                <div className='row form-group'>
+                <div className='row form-group mb-2'>
                   <div className={`col${type === 3 ? '-5' : '-12'}`}>
                     <select
                       id='walletSelect'

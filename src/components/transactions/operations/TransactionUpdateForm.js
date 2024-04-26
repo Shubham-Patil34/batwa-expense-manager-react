@@ -110,7 +110,7 @@ const TransactionUpdateForm = ({
       <div className='row'>
         <div className='col-10 col-md-8 col-lg-6 m-auto '>
           <Link
-            to={`/transactions/${batwaId}`}
+            to={batwaId ? `/transactions/${fromBatwaId}` : `/dashboard`}
             className='btn btn-outline-secondary mb-2'
           >
             Back to Wallet
@@ -202,14 +202,14 @@ const TransactionUpdateForm = ({
                   <p className='text-danger'>{errors.type}</p>
                 </div>
 
-                <div className='row form-group'>
+                <div className='row form-group mb-2'>
                   <div className={`col${type === 3 ? '-5' : '-12'}`}>
                     <select
                       id='walletSelect'
                       name='fromBatwaId'
                       onChange={changeHandler}
                       className={classnames('form-control form-control-lg', {
-                        'is-invalid': errors.errors.fromBatwaIdValid,
+                        'is-invalid': errors.fromBatwaIdValid,
                       })}
                       // disabled
                     >
