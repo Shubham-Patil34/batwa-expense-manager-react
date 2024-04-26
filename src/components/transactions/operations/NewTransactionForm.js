@@ -12,7 +12,6 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
   const [errorsState, setErrorsState] = useState('');
   const [saving, setSaving] = useState(false);
   const [fromBatwaId, setFromBatwaId] = useState('');
-  const [fromBatwaId, setFromBatwaId] = useState('');
   const [toBatwaId, setToBatwaId] = useState('');
 
   const navigate = useNavigate();
@@ -28,14 +27,10 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
       type,
       date,
       batwaId: fromBatwaId,
-      batwaId: fromBatwaId,
       toBatwaId,
     };
 
     const timeout = setTimeout(() => {
-      dispatch(
-        createTransaction(fromBatwaId, toBatwaId, newTransaction, navigate)
-      );
       dispatch(
         createTransaction(fromBatwaId, toBatwaId, newTransaction, navigate)
       );
@@ -44,8 +39,6 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
   };
 
   useEffect(() => {
-    setFromBatwaId(batwaId);
-
     setFromBatwaId(batwaId);
 
     if (errors !== errorsState) {
@@ -67,15 +60,9 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
         if (type !== 3) {
           setToBatwaId('');
         }
-        if (type !== 3) {
-          setToBatwaId('');
-        }
         break;
       case 'toBatwaId':
         setToBatwaId(parseInt(value));
-        break;
-      case 'fromBatwaId':
-        setFromBatwaId(parseInt(value));
         break;
       case 'fromBatwaId':
         setFromBatwaId(parseInt(value));
@@ -104,7 +91,6 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
         <div className='col-10 col-md-8 col-lg-6 m-auto '>
           <Link
             to={batwaId ? `/transactions/${fromBatwaId}` : `/dashboard`}
-            to={batwaId ? `/transactions/${fromBatwaId}` : `/dashboard`}
             className='btn btn-outline-secondary mb-2'
           >
             Back to Wallet
@@ -118,10 +104,6 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
           >
             <div className='col-11 m-auto'>
               <h6 className='display-6 text-center'>Record New Transaction</h6>
-              <p className='lead text-center'>
-                {wallets.find((wallet) => wallet.id === fromBatwaId)?.name}{' '}
-                Account
-              </p>
               <p className='lead text-center'>
                 {wallets.find((wallet) => wallet.id === fromBatwaId)?.name}{' '}
                 Account
@@ -201,25 +183,15 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
                     <select
                       id='walletSelect'
                       name='fromBatwaId'
-                      name='fromBatwaId'
                       onChange={changeHandler}
                       className={classnames('form-control form-control-lg', {
                         'is-invalid': errors.fromBatwaIdValid,
-                        'is-invalid': errors.fromBatwaIdValid,
                       })}
-                      // disabled
                       // disabled
                     >
                       <option value=''>Transfer from account</option>
-                      <option value=''>Transfer from account</option>
                       {wallets.map(
                         (wallet) =>
-                          wallet.id !== toBatwaId && (
-                            <option
-                              key={wallet.id}
-                              value={wallet.id}
-                              selected={wallet.id === fromBatwaId}
-                            >
                           wallet.id !== toBatwaId && (
                             <option
                               key={wallet.id}
@@ -231,47 +203,6 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
                           )
                       )}
                     </select>
-                  </div>
-                  {type === 3 && (
-                    <div className='col-7 row pe-0'>
-                      <div className='col-2 arrow m-auto'></div>
-                      <div className='col-10 pe-0'>
-                        <select
-                          id='walletSelect'
-                          name='toBatwaId'
-                          onChange={changeHandler}
-                          className={classnames(
-                            'form-control form-control-lg',
-                            {
-                              'is-invalid':
-                                errors.toBatwaIdValid ||
-                                errors.toBatwaIdInValid,
-                            }
-                          )}
-                          // disabled
-                        >
-                          <option value=''>Transfer to account</option>
-                          {wallets.map(
-                            (wallet) =>
-                              wallet.id !== fromBatwaId && (
-                                <option
-                                  key={wallet.id}
-                                  value={wallet.id}
-                                  selected={wallet.id === toBatwaId}
-                                >
-                                  {wallet.name}
-                                </option>
-                              )
-                          )}
-                        </select>
-                      </div>
-                    </div>
-                  )}
-                  <p className='text-danger m-0'>{errors.toBatwaIdValid}</p>
-                  <p className='text-danger m-0'>{errors.toBatwaIdInValid}</p>
-                  <p className='text-danger m-0'>{errors.fromBatwaIdValid}</p>
-                </div>
-
                   </div>
                   {type === 3 && (
                     <div className='col-7 row pe-0'>
