@@ -20,6 +20,7 @@ const TransactionUpdateForm = ({
   const [date, setDate] = useState(getCurrentDate());
   const [errorsState, setErrorsState] = useState('');
   const [saving, setSaving] = useState(false);
+  const [fromBatwaId, setFromBatwaId] = useState('');
   const [toBatwaId, setToBatwaId] = useState('');
 
   const navigate = useNavigate();
@@ -34,12 +35,12 @@ const TransactionUpdateForm = ({
       description,
       type,
       date,
-      batwaId,
+      batwaId: fromBatwaId,
       toBatwaId,
     };
     const timeout = setTimeout(() => {
       dispatch(
-        updateTransaction(batwaId, transactionId, newTransaction, navigate)
+        updateTransaction(fromBatwaId, transactionId, newTransaction, navigate)
       );
       setSaving(false);
     }, 1000);
@@ -55,6 +56,7 @@ const TransactionUpdateForm = ({
     setDescription(transaction.description);
     setType(transaction.type);
     setDate(transaction.date);
+    setFromBatwaId(transaction.batwaId);
     setToBatwaId(transaction.toBatwaId);
   }, [
     errors,
@@ -75,9 +77,15 @@ const TransactionUpdateForm = ({
         break;
       case 'type':
         setType(parseInt(value));
+        if (value !== 3) {
+          setToBatwaId('');
+        }
         break;
       case 'toBatwaId':
         setToBatwaId(parseInt(value));
+        break;
+      case 'fromBatwaId':
+        setFromBatwaId(parseInt(value));
         break;
       case 'date':
         setDate(value);
@@ -92,7 +100,9 @@ const TransactionUpdateForm = ({
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
     const day = String(currentDate.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
 
   return (
@@ -150,7 +160,7 @@ const TransactionUpdateForm = ({
                       className='form-check-input'
                       type='radio'
                       name='type'
-                      disabled={type !== 1}
+                      // disabled={type !== 1}
                       onChange={changeHandler}
                       id='income'
                       value='1'
@@ -165,7 +175,7 @@ const TransactionUpdateForm = ({
                       checked={type === 2}
                       type='radio'
                       name='type'
-                      disabled={type !== 2}
+                      // disabled={type !== 2}
                       onChange={changeHandler}
                       id='expense'
                       value='2'
@@ -180,7 +190,7 @@ const TransactionUpdateForm = ({
                       checked={type === 3}
                       type='radio'
                       name='type'
-                      disabled={type !== 3}
+                      // disabled={type !== 3}
                       onChange={changeHandler}
                       id='transfer'
                       value='3'
@@ -196,33 +206,26 @@ const TransactionUpdateForm = ({
                     <div className='col-5'>
                       <select
                         id='walletSelect'
-                        name='toBatwaId'
+                        name='fromBatwaId'
                         onChange={changeHandler}
                         className={classnames('form-control form-control-lg', {
                           'is-invalid': errors.toBatwaIdValid,
                         })}
-                        disabled
+                        // disabled
                       >
-                        <option value=''>Transfer to account</option>
-                        {/* {wallets.map(
-                        (wallet) =>
-                          wallet.id !== batwaId && (
-                            <option key={wallet.id} value={wallet.id}>
-                              {wallet.name}
-                            </option>
-                          )
-                      )} */}
-                        <option
-                          key={transaction.toBatwaId}
-                          value={transaction.toBatwaId}
-                          selected
-                        >
-                          {
-                            wallets.find(
-                              (wallet) => wallet.id === transaction.batwaId
-                            )?.name
-                          }
-                        </option>
+                        <option value=''>Transfer from account</option>
+                        {wallets.map(
+                          (wallet) =>
+                            wallet.id !== toBatwaId && (
+                              <option
+                                key={wallet.id}
+                                value={wallet.id}
+                                selected={wallet.id === fromBatwaId}
+                              >
+                                {wallet.name}
+                              </option>
+                            )
+                        )}
                       </select>
                     </div>
                     <div className='col-1 arrow m-auto '></div>
@@ -232,39 +235,34 @@ const TransactionUpdateForm = ({
                         name='toBatwaId'
                         onChange={changeHandler}
                         className={classnames('form-control form-control-lg', {
-                          'is-invalid': errors.toBatwaIdValid,
+                          'is-invalid':
+                            errors.toBatwaIdValid || errors.toBatwaIdInValid,
                         })}
-                        disabled
+                        // disabled
                       >
                         <option value=''>Transfer to account</option>
-                        {/* {wallets.map(
-                        (wallet) =>
-                          wallet.id !== batwaId && (
-                            <option key={wallet.id} value={wallet.id}>
-                              {wallet.name}
-                            </option>
-                          )
-                      )} */}
-                        <option
-                          key={transaction.toBatwaId}
-                          value={transaction.toBatwaId}
-                          selected
-                        >
-                          {
-                            wallets.find(
-                              (wallet) => wallet.id === transaction.toBatwaId
-                            )?.name
-                          }
-                        </option>
+                        {wallets.map(
+                          (wallet) =>
+                            wallet.id !== fromBatwaId && (
+                              <option
+                                key={wallet.id}
+                                value={wallet.id}
+                                selected={wallet.id === toBatwaId}
+                              >
+                                {wallet.name}
+                              </option>
+                            )
+                        )}
                       </select>
                     </div>
-                    <p className='text-danger'>{errors.toBatwaIdValid}</p>
+                    <p className='text-danger m-0'>{errors.toBatwaIdValid}</p>
+                    <p className='text-danger m-0'>{errors.toBatwaIdInValid}</p>
                   </div>
                 )}
                 <h6>Transaction Date</h6>
                 <div className='form-group mb-2'>
                   <input
-                    type='date'
+                    type='datetime-local'
                     name='date'
                     onChange={changeHandler}
                     value={date}

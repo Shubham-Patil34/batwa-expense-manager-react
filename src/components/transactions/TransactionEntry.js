@@ -41,6 +41,20 @@ class TransactionEntry extends Component {
       2: 'danger',
       3: 'primary',
     };
+
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      };
+      return date.toLocaleDateString('en-IN', options);
+    };
+
     const bgColorCls = typeToBgColor[transaction.type] || '';
 
     return (
@@ -58,7 +72,7 @@ class TransactionEntry extends Component {
             </span>
           )}
         </td>
-        <td>{transaction.date}</td>
+        <td>{formatDate(transaction.date)}</td>
         <td>{transaction.description}</td>
         <td className={`text-${bgColorCls}`}>
           {parseFloat(transaction.amount).toFixed(2)}

@@ -69,7 +69,9 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
     const day = String(currentDate.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
 
   return (
@@ -136,9 +138,7 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
                   </div>
                   <div className='form-check form-check-inline'>
                     <input
-                      className={classnames('form-check-input', {
-                        'is-invalid': errors.type,
-                      })}
+                      className='form-check-input'
                       type='radio'
                       name='type'
                       onChange={changeHandler}
@@ -190,7 +190,7 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
                 <h6>Transaction Date</h6>
                 <div className='form-group mb-2'>
                   <input
-                    type='date'
+                    type='datetime-local'
                     name='date'
                     onChange={changeHandler}
                     value={date}
