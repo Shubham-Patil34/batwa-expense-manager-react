@@ -57,9 +57,9 @@ class Dashboard extends Component {
                   <Link className='dropdown-item' to='/createwallet'>
                     Wallet
                   </Link>
-                  <button disabled className='dropdown-item'>
+                  <Link className='dropdown-item' to='/newTransaction'>
                     Transaction
-                  </button>
+                  </Link>
                 </div>
               </div>
               <br />

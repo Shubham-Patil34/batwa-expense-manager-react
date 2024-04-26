@@ -11,6 +11,7 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
   const [date, setDate] = useState(getCurrentDate());
   const [errorsState, setErrorsState] = useState('');
   const [saving, setSaving] = useState(false);
+  const [fromBatwaId, setFromBatwaId] = useState('');
   const [toBatwaId, setToBatwaId] = useState('');
 
   const navigate = useNavigate();
@@ -25,17 +26,21 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
       description,
       type,
       date,
-      batwaId,
+      batwaId: fromBatwaId,
       toBatwaId,
     };
 
     const timeout = setTimeout(() => {
-      dispatch(createTransaction(batwaId, toBatwaId, newTransaction, navigate));
+      dispatch(
+        createTransaction(fromBatwaId, toBatwaId, newTransaction, navigate)
+      );
       setSaving(false);
     }, 1000);
   };
 
   useEffect(() => {
+    setFromBatwaId(batwaId);
+
     if (errors !== errorsState) {
       setErrorsState(errors);
     }
@@ -52,9 +57,15 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
         break;
       case 'type':
         setType(parseInt(value));
+        if (type !== 3) {
+          setToBatwaId('');
+        }
         break;
       case 'toBatwaId':
         setToBatwaId(parseInt(value));
+        break;
+      case 'fromBatwaId':
+        setFromBatwaId(parseInt(value));
         break;
       case 'date':
         setDate(value);
@@ -79,7 +90,7 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
       <div className='row'>
         <div className='col-10 col-md-8 col-lg-6 m-auto '>
           <Link
-            to={`/transactions/${batwaId}`}
+            to={batwaId ? `/transactions/${fromBatwaId}` : `/dashboard`}
             className='btn btn-outline-secondary mb-2'
           >
             Back to Wallet
@@ -93,7 +104,10 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
           >
             <div className='col-11 m-auto'>
               <h6 className='display-6 text-center'>Record New Transaction</h6>
-              <p className='lead text-center'>{walletName} Account</p>
+              <p className='lead text-center'>
+                {wallets.find((wallet) => wallet.id === fromBatwaId)?.name}{' '}
+                Account
+              </p>
               <form onSubmit={handleSubmit}>
                 <div className='form-group mb-2'>
                   <input
@@ -164,29 +178,72 @@ const NewTransactionForm = ({ batwaId, walletName, wallets, errors }) => {
                   </div>
                   <p className='text-danger'>{errors.type}</p>
                 </div>
-                {type === 3 && (
-                  <div className='form-group mb-2'>
+                <div className='row form-group mb-2'>
+                  <div className={`col${type === 3 ? '-5' : '-12'}`}>
                     <select
                       id='walletSelect'
-                      name='toBatwaId'
+                      name='fromBatwaId'
                       onChange={changeHandler}
                       className={classnames('form-control form-control-lg', {
-                        'is-invalid': errors.toBatwaIdValid,
+                        'is-invalid': errors.fromBatwaIdValid,
                       })}
+                      // disabled
                     >
-                      <option value=''>Transfer to account</option>
+                      <option value=''>Transfer from account</option>
                       {wallets.map(
                         (wallet) =>
-                          wallet.id !== batwaId && (
-                            <option key={wallet.id} value={wallet.id}>
+                          wallet.id !== toBatwaId && (
+                            <option
+                              key={wallet.id}
+                              value={wallet.id}
+                              selected={wallet.id === fromBatwaId}
+                            >
                               {wallet.name}
                             </option>
                           )
                       )}
                     </select>
-                    <p className='text-danger'>{errors.toBatwaIdValid}</p>
                   </div>
-                )}
+                  {type === 3 && (
+                    <div className='col-7 row pe-0'>
+                      <div className='col-2 arrow m-auto'></div>
+                      <div className='col-10 pe-0'>
+                        <select
+                          id='walletSelect'
+                          name='toBatwaId'
+                          onChange={changeHandler}
+                          className={classnames(
+                            'form-control form-control-lg',
+                            {
+                              'is-invalid':
+                                errors.toBatwaIdValid ||
+                                errors.toBatwaIdInValid,
+                            }
+                          )}
+                          // disabled
+                        >
+                          <option value=''>Transfer to account</option>
+                          {wallets.map(
+                            (wallet) =>
+                              wallet.id !== fromBatwaId && (
+                                <option
+                                  key={wallet.id}
+                                  value={wallet.id}
+                                  selected={wallet.id === toBatwaId}
+                                >
+                                  {wallet.name}
+                                </option>
+                              )
+                          )}
+                        </select>
+                      </div>
+                    </div>
+                  )}
+                  <p className='text-danger m-0'>{errors.toBatwaIdValid}</p>
+                  <p className='text-danger m-0'>{errors.toBatwaIdInValid}</p>
+                  <p className='text-danger m-0'>{errors.fromBatwaIdValid}</p>
+                </div>
+
                 <h6>Transaction Date</h6>
                 <div className='form-group mb-2'>
                   <input
